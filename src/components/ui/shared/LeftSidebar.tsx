@@ -1,7 +1,7 @@
 import { sidebarLinks } from "@/constants";
 import { useUserContext } from "@/context/AuthContext";
 import { useSignOutAccount } from "@/lib/react-query/queriesAndMutations";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { INavLink } from "@/types";
 import { Button } from "../button";
@@ -80,7 +80,6 @@ const LeftSidebar = () => {
         <img src="/assets/icons/logout.svg" alt="logout" />
         <p className="small-medium lg:base-medium">Logout</p>
       </Button>
-
     </nav>
   );
 };

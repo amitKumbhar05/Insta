@@ -1,7 +1,6 @@
 import { INewPost, INewUser, IUpdatePost } from "@/types";
 import { ID, Query } from "appwrite";
-import { account, appwriteConfig, avatars, databases, storage } from "./config";
-import { useUserContext } from "@/context/AuthContext";
+import { account, appwriteConfig, databases, storage } from "./config";
 
 // const {user } = useUserContext()
 
@@ -16,15 +15,15 @@ export async function createUserAccount(user: INewUser) {
 
     if (!newAccount) throw Error;
 
-    const avatarUrl = avatars.getInitials(user.name);
+    // const avatarUrl = avatars.getInitials(user.name);
 
-    const newUser = await saveUserToDb({
-      accountId: newAccount.$id,
-      email: newAccount.email,
-      name: newAccount.name,
-      username: user.username,
-      imageUrl: avatarUrl,
-    });
+    // const newUser = await saveUserToDb({
+    //   accountId: newAccount.$id,
+    //   email: newAccount.email,
+    //   name: newAccount.name,
+    //   username: user.username,
+    //   imageUrl: avatarUrl,
+    // });
 
     return newAccount;
   } catch (error) {

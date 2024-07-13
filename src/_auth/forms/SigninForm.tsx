@@ -15,18 +15,16 @@ import { useForm } from "react-hook-form";
 import { SigninValidation } from "@/lib/validation";
 import Loader from "@/components/ui/shared/Loader";
 import { Link, useNavigate } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/use-toast";
 import { useSignInAccount } from "@/lib/react-query/queriesAndMutations";
 import { useUserContext } from "../../context/AuthContext";
 
-
 const SigninForm = () => {
-
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const {checkAuthUser, isLoading:isUserLoading} = useUserContext()
-  const {mutateAsync:signInAccount, isPending:isSigningIn} =useSignInAccount();
+  const { checkAuthUser, isLoading: isUserLoading } = useUserContext();
+  const { mutateAsync: signInAccount } = useSignInAccount();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof SigninValidation>>({
@@ -39,27 +37,21 @@ const SigninForm = () => {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SigninValidation>) {
-  
     const session = await signInAccount({
       email: values.email,
-      password: values.password
+      password: values.password,
     });
 
-    if(!session) return toast({title:"Sign in failed,Please try again."})
+    if (!session) return toast({ title: "Sign in failed,Please try again." });
 
     const isLoggedIn = await checkAuthUser();
 
-    if(isLoggedIn)
-    {
+    if (isLoggedIn) {
       form.reset();
-      navigate('/');
+      navigate("/");
+    } else {
+      return toast({ title: "Sign up failed please try again!" });
     }
-    else
-    {
-      return toast({title:"Sign up failed please try again!"})
-    }
-
-
   }
 
   return (
@@ -73,8 +65,10 @@ const SigninForm = () => {
           Welcome back! Please enter your details
         </p>
 
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 mt-4 w-full">
-          
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-5 mt-4 w-full"
+        >
           <FormField
             control={form.control}
             name="email"
@@ -102,13 +96,22 @@ const SigninForm = () => {
             )}
           />
           <Button className="shad-button_primary" type="submit">
-            {isUserLoading? (<div className="flex-center gap-2">
-              <Loader/> Loading . . .
-            </div>):"Sign in"}
+            {isUserLoading ? (
+              <div className="flex-center gap-2">
+                <Loader /> Loading . . .
+              </div>
+            ) : (
+              "Sign in"
+            )}
           </Button>
           <p className="text-small-regular text-light-2 text-center mt-2">
             Don't have an account?
-            <Link className="text-primary-500 text-small-semibold ml-1" to='/sign-up'>Sign Up</Link> 
+            <Link
+              className="text-primary-500 text-small-semibold ml-1"
+              to="/sign-up"
+            >
+              Sign Up
+            </Link>
           </p>
         </form>
       </div>
