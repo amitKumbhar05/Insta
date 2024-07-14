@@ -1,8 +1,17 @@
 import { useUserContext } from "@/context/AuthContext";
+import { useEffect, useState } from "react";
 import { Outlet, Navigate } from "react-router-dom";
 
 const AuthLayout = () => {
-  const isAuthenticated = useUserContext();
+  const { checkAuthUser } = useUserContext();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const checkU = async () => {
+    const pro = await checkAuthUser();
+    setIsAuthenticated(pro)
+  };
+  useEffect(() => {
+    checkU()
+  }, []);
   return (
     <>
       {isAuthenticated ? (
@@ -13,7 +22,11 @@ const AuthLayout = () => {
             <Outlet />
           </section>
 
-          <img src="/assets/images/side-img.svg" alt="logo" className="hidden xl:block bg-no-repeat h-screen w-1/2 object-cover" />
+          <img
+            src="/assets/images/side-img.svg"
+            alt="logo"
+            className="hidden xl:block bg-no-repeat h-screen w-1/2 object-cover"
+          />
         </>
       )}
     </>

@@ -11,14 +11,14 @@ export const INITIAL_USER = {
   imageUrl: "",
   bio: "",
 };
-interface AuthContextProps {
+type IContextType = {
   user: IUser;
   isLoading: boolean;
+  setUser: React.Dispatch<React.SetStateAction<IUser>>;
   isAuthenticated: boolean;
-  setUser: (user: IUser) => void;
-  setIsAuthenticated: (val: boolean) => void;
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
   checkAuthUser: () => Promise<boolean>;
-}
+};
 
 const INITIAL_STATE = {
   user: INITIAL_USER,
@@ -29,7 +29,7 @@ const INITIAL_STATE = {
   checkAuthUser: async () => false as boolean,
 };
 
-const Authcontext = createContext<AuthContextProps>(INITIAL_STATE);
+const Authcontext = createContext<IContextType>(INITIAL_STATE);
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
@@ -42,6 +42,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const currentAccout = await getCurrentUser();
 
       if (currentAccout) {
+        
         setUser({
           id: currentAccout.$id,
           name: currentAccout.name,
@@ -68,9 +69,12 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     //
     if (
       localStorage.getItem("cookieFallback") === "[]" ||
-      localStorage.getItem("cookieFallback") === null
-    )
+      localStorage.getItem("cookieFallback") === null ||
+      !localStorage.getItem("cookieFallback")
+    ) {
       navigate("sign-in");
+      return;
+    }
 
     checkAuthUser();
   }, []);
