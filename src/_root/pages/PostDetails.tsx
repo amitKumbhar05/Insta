@@ -9,9 +9,9 @@ import { Link, useParams } from "react-router-dom";
 const PostDetails = () => {
   const { id } = useParams();
   const { data: post, isPending } = useGetPostById(id || "");
-  const {user } = useUserContext()
+  const { user } = useUserContext()
 
-  const handleDeletePost = () => {}
+  const handleDeletePost = () => { }
 
   return (
     <div className="post_details-container">
@@ -49,33 +49,33 @@ const PostDetails = () => {
                 </div>
               </Link>
               <div className="flex-center">
-                  <Link to={`/update-post/${post?.$id}`} className={`${user.id !== post?.creator.$id && 'hidden'}`}>
-                    <img src="/assets/icons/edit.svg" alt="edit" width={24} height={24} />
-                  </Link>
+                <Link to={`/update-post/${post?.$id}`} className={`${user.id !== post?.creator.$id && 'hidden'}`}>
+                  <img src="/assets/icons/edit.svg" alt="edit" width={24} height={24} />
+                </Link>
 
-                  <Button
+                <Button
                   onClick={handleDeletePost}
                   variant='ghost'
                   className={`${user.id !== post?.creator.$id && 'hidden'} ghost_details-delete_btn`}
-                  >
-                    <img src="/assets/icons/delete.svg" alt="delete" width={24} height={24} />
-                  </Button>
+                >
+                  <img src="/assets/icons/delete.svg" alt="delete" width={24} height={24} />
+                </Button>
 
               </div>
             </div>
-            <hr className="border w-full border-dark-4/80"/>
+            <hr className="border w-full border-dark-4/80" />
             <div className="flex flex-col flex-1 w-full small-medium lg:base-regular">
-                <p>{post?.caption}</p>
-                <ul className="flex gap-1 mt-2">
-                    {post?.tags.map((tag:string)=>(
-                        <li key={tag} className="text-light-3">
-                            #{tag}
-                        </li>
-                    ))}
-                </ul>
+              <p>{post?.caption}</p>
+              <ul className="flex gap-1 mt-2">
+                {post?.tags.map((tag: string) => (
+                  <li key={tag} className="text-light-3">
+                    #{tag}
+                  </li>
+                ))}
+              </ul>
             </div>
             <div className="w-full">
-                  <PostStats post={post} userId={user.id}/>
+              <PostStats post={post} userId={user.id} />
             </div>
           </div>
         </div>
